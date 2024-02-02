@@ -1,95 +1,126 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client'
+
+import {
+  useState,
+  ReactNode,
+  createContext,
+  Dispatch,
+  SetStateAction,
+} from 'react'
+import style from './page.module.css'
+import { Modal } from './components/Modal'
+import { Task } from './components/task'
+
+interface TaskItem {
+  key: string
+  content: string
+}
+
+interface TasksContextProps {
+  tasks: TaskItem[]
+  setTasks: Dispatch<SetStateAction<TaskItem[]>>
+  checkedTasks: TaskItem[]
+  setCheckedTasks: Dispatch<SetStateAction<TaskItem[]>>
+  newTasks: string
+  setNewTasks: Dispatch<SetStateAction<string>>
+  count: number
+  setCount: Dispatch<SetStateAction<number>>
+}
+
+export const TasksContext = createContext<TasksContextProps | undefined>(
+  undefined,
+)
 
 export default function Home() {
+  const [tasks, setTasks] = useState<TaskItem[]>([])
+  const [checkedTasks, setCheckedTasks] = useState<TaskItem[]>([])
+  const [newTasks, setNewTasks] = useState<string>('')
+  const [count, setCount] = useState<number>(1)
+
+  function onDeleteTasks(taskToDelete: string) {
+    const tasksWithoutDeleteOne = tasks.filter(
+      (task) => task.content !== taskToDelete,
+    )
+    setTasks(tasksWithoutDeleteOne)
+  }
+
+  function onCheckedTasks(taskToChecked: string) {
+    const checkedTask = tasks.find((task) => task.content === taskToChecked)
+
+    if (checkedTask) {
+      setCheckedTasks((prevCheckedTasks) => [...prevCheckedTasks, checkedTask])
+      onDeleteTasks(taskToChecked)
+    }
+  }
+
+  function unCheckedTasks(taskToUnchecked: string) {
+    const uncheckedTaskOne = checkedTasks.find(
+      (task) => task.content === taskToUnchecked,
+    )
+
+    if (uncheckedTaskOne) {
+      setTasks((prevTasks) => [...prevTasks, uncheckedTaskOne])
+      onDeleteTasks(taskToUnchecked)
+    }
+  }
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <TasksContext.Provider
+      value={{
+        tasks,
+        setTasks,
+        checkedTasks,
+        setCheckedTasks,
+        newTasks,
+        setNewTasks,
+        count,
+        setCount,
+      }}
+    >
+      <section className={style.section}>
+        <div className={style.container}>
+          <h2 className={style.h2}>Suas tarefas de Hoje</h2>
+          <div className={style.tasks}>
+            <div className={style.task}></div>
+            <div className={style.content}>
+              <div className={style.tasks}>
+                {tasks.map((task) => (
+                  <Task
+                    key={task.key}
+                    unCheckedTasks={unCheckedTasks}
+                    onCheckedTasks={onCheckedTasks}
+                    content={task.content}
+                    status={false}
+                    onDeleteTasks={onDeleteTasks}
+                    checked={false}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <h2 className={style.h2}>Tarefas finalizadas</h2>
+          <div className={style.tasks}>
+            <div className={style.task}></div>
+            <div className={style.content}>
+              <div className={style.tasks}>
+                {checkedTasks.map((checkedTask) => (
+                  <Task
+                    key={checkedTask.key}
+                    onCheckedTasks={onCheckedTasks}
+                    content={checkedTask.content}
+                    status={false}
+                    onDeleteTasks={onDeleteTasks}
+                    checked={true}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <Modal />
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
+      </section>
+    </TasksContext.Provider>
+  )
 }

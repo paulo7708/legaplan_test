@@ -1,0 +1,72 @@
+
+.handleTask{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  align-items: start;
+}
+
+.taskStyle {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+  height: 4.5rem;
+  background-color: var(--gray-400);
+  color: var(--gray-100);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  width:22.125rem;
+  border: dashed 1px gray;
+}
+
+.taskStyleCliked {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+  height: 4.5rem;
+  background-color: var(--gray-400);
+  color: var(--gray-100);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  
+  text-decoration: line-through;
+  color: var(--purple);
+}
+
+.check{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  width: 15rem;
+}
+
+.taskStyleCliked .circle {
+  display: none;
+}
+
+.taskStyle .checkCircle {
+  display: none;
+}
+
+.text {
+  color: #000;
+}
+
+
+.trash {
+  color: #000;
+}
+
+.trash:hover {
+  color: red;
+}
