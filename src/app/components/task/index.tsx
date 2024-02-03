@@ -15,17 +15,13 @@ export const Task = ({
   content,
   onDeleteTasks,
   onCheckedTasks,
-  unCheckedTasks,
   checked,
 }: bodyTask) => {
   const handleDeleteTasks = () => onDeleteTasks(content)
   const handleCheckedTasks = () => onCheckedTasks(content)
-  const handleUncheckedTasks = () => unCheckedTasks(content)
 
   const handleClick = () => {
-    if (checked === true) {
-      handleUncheckedTasks()
-    } else {
+    if (checked === false) {
       handleCheckedTasks()
     }
   }

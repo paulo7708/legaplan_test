@@ -2,9 +2,8 @@ import { useContext } from 'react'
 import s from './style.module.css'
 import { TasksContext } from '@/app/page'
 
-export const ModalDelete = () => {
-  const { count, setCount, tasks, setNewTasks, setTasks, onDeleteTasks }: any =
-    useContext(TasksContext)
+export const ModalDelete = ({ onClose, onDeleteTasks }: any) => {
+  const { count, tasks }: any = useContext(TasksContext)
 
   const handleDelete = (event: React.FormEvent) => {
     event.preventDefault()
@@ -16,6 +15,7 @@ export const ModalDelete = () => {
     }
 
     onDeleteTasks(deleteTask)
+    onClose() // Feche o modal após a exclusão da tarefa
   }
 
   return (
@@ -40,7 +40,7 @@ export const ModalDelete = () => {
         </div>
       </form>
       <label className={s.btn} htmlFor="modal-1">
-        Cancelar
+        Remover Tarefa
       </label>
     </div>
   )

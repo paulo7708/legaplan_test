@@ -117,9 +117,8 @@ export default function Home() {
               </div>
             </div>
           </div>
-
-          <Modal />
         </div>
+        <Modal />
       </section>
     </TasksContext.Provider>
   )
